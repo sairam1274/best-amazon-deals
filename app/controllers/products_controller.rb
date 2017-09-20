@@ -4,7 +4,7 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    AmazonProduct.delay.sync_products unless job = Delayed::Job.first and !job.last_error
+    initiate_sync_job
     @products = AmazonProduct.all
     # @products = AmazonProduct.item_search("Books", "book")
   end
@@ -72,5 +72,12 @@ class ProductsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def product_params
       params.fetch(:product, {})
+    end
+    
+    def initiate_sync_job
+      job = Delayed::Job.first
+      if job and !job.last_error
+        AmazonProduct.delay.sync_products
+      end
     end
 end

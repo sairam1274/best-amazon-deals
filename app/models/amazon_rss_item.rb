@@ -11,8 +11,8 @@
 
 class AmazonRssItem < ActiveRecord::Base
   def self.initialize_feed_sync
+    self.destroy_all
     self.get_goldbox_rss_results
-    AmazonProduct.process_rss_items
   end
   
   def self.get_goldbox_rss_results
@@ -20,9 +20,9 @@ class AmazonRssItem < ActiveRecord::Base
     rss = RSS::Parser.parse('https://rssfeeds.s3.amazonaws.com/goldbox', false)
     case rss.feed_type
       when 'rss'
-        rss.items[0..5].each { |item| AmazonRssItem.process_item(item) }
+        rss.items[0..20].each { |item| AmazonRssItem.process_item(item) }
       when 'atom'
-        rss.items[0..5].each { |item| AmazonRssItem.process_item(item) }
+        rss.items[0..20].each { |item| AmazonRssItem.process_item(item) }
     end
     # TODO: remove old entries (by timestamp?)
   end
