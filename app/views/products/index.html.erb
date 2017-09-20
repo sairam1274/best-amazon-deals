@@ -1,0 +1,55 @@
+<div class="ui fixed inverted menu">
+  <div class="ui container">
+    <div href="#" class="header item">
+      <img class="logo" src="assets/images/logo.png" alt="AmaPrime logo">
+    </div>
+    <a href="#" class="ui right floated dropdown item">AmaPrime</a>
+  </div>
+</div>
+
+
+<div id="carousel_container" class="ui inverted vertical masthead center aligned segment slick">
+  <% @products.each do |product| %>
+    <div class="ui card product_card">
+      <div class="discount content">
+        <div class="header"><%= number_to_percentage(product.percent_discount * 100, precision: 0) %> Off</div>
+      </div>
+      <div class="content">
+        <%= link_to image_tag(product.image_link), product.product_link, target: "_blank", class: "image" %>
+      </div>
+      <div class="content">
+        <div class="header"><%= product.title %></div>
+        <div class="description">
+          
+        </div>
+      </div>
+      <div class="ui bottom attached button">
+        <%= link_to (content_tag :i, nil, class: "add icon") + "View on Amazon", product.product_link, target: "_blank" %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.slick').slick({
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 5000
+    });
+  });
+</script>
+
+
+<div class="ui inverted vertical footer segment">
+  <div class="ui center aligned container">
+    <img src="assets/images/logo.png" class="ui centered mini image" alt="AmaPrime logo">
+    <div class="ui horizontal inverted small divided link list">
+      <a class="item" href="#">Site Map</a>
+      <a class="item" href="#">Contact Us</a>
+      <a class="item" href="#">Terms and Conditions</a>
+      <a class="item" href="#">Privacy Policy</a>
+    </div>
+  </div>
+</div>
