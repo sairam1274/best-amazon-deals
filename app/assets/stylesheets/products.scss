@@ -20,9 +20,11 @@ body {
   padding: 5em 0em;
 }
 
+#header { text-align: center; }
+
 #carousel_container {
   margin-top: 3em;
   .product_card { width: 250px !important; margin: 0 auto; }
   button.slick-arrow { display: none !important; }
-  .discount.content { background-color: lightgoldenrodyellow; }
+  .discount.content { background-color: lightgoldenrodyellow; color: black; }
 }

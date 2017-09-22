@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20170920022344) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "amazon_apis", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -52,7 +55,7 @@ ActiveRecord::Schema.define(version: 20170920022344) do
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority"
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "products", force: :cascade do |t|
     t.datetime "created_at", null: false

@@ -4,7 +4,6 @@ class ProductsController < ApplicationController
   # GET /products
   # GET /products.json
   def index
-    initiate_sync_job
     @products = AmazonProduct.all
     # @products = AmazonProduct.item_search("Books", "book")
   end
@@ -74,10 +73,4 @@ class ProductsController < ApplicationController
       params.fetch(:product, {})
     end
     
-    def initiate_sync_job
-      job = Delayed::Job.first
-      if job and !job.last_error
-        AmazonProduct.delay.sync_products
-      end
-    end
 end

@@ -11,7 +11,6 @@
 
 class AmazonRssItem < ActiveRecord::Base
   def self.initialize_feed_sync
-    self.destroy_all
     self.get_goldbox_rss_results
   end
   
@@ -20,9 +19,12 @@ class AmazonRssItem < ActiveRecord::Base
     rss = RSS::Parser.parse('https://rssfeeds.s3.amazonaws.com/goldbox', false)
     case rss.feed_type
       when 'rss'
-        rss.items[0..20].each { |item| AmazonRssItem.process_item(item) }
+        rss.items[0..50].each do |item| 
+          AmazonRssItem.first.destroy if AmazonRssItem.count > 50
+          AmazonRssItem.process_item(item)
+        end
       when 'atom'
-        rss.items[0..20].each { |item| AmazonRssItem.process_item(item) }
+        rss.items[0..50].each { |item| AmazonRssItem.process_item(item) }
     end
     # TODO: remove old entries (by timestamp?)
   end
@@ -32,12 +34,12 @@ class AmazonRssItem < ActiveRecord::Base
       record = self.find_or_initialize_by(asin: self.get_asin_from_feed_entry(item))
       record.title = item.title
       record.save
+      puts "processed RSS item #{record.asin} - #{record.title}"
     end
   end
   
   def self.get_asin_from_feed_entry(item)
     parsed_array = item.link.split("/")
-    puts item.link
     index_of_dp = parsed_array.index("dp")
     parsed_array[index_of_dp + 1]
   end

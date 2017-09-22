@@ -1,6 +1,5 @@
 source 'https://rubygems.org'
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.5'
 
@@ -32,7 +31,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
+  # Call 'byebug' anywhere in the code to stop execution, get a debugger console
   gem 'byebug'
 end
 
@@ -43,6 +42,7 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
   
+  gem 'rubocop', '~> 0.50.0', require: false
 end
 
 # Amazon Product Advertising API gem
@@ -60,4 +60,7 @@ gem 'figaro'
 
 gem 'pg'
 gem 'rails_12factor', group: :production
+
+gem 'meta-tags'
+
 ruby "2.3.4"

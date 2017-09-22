@@ -1,18 +1,15 @@
-<div class="ui fixed inverted menu">
-  <div class="ui container">
-    <div href="#" class="header item">
-      <img class="logo" src="assets/images/logo.png" alt="AmaPrime logo">
-    </div>
-    <a href="#" class="ui right floated dropdown item">AmaPrime</a>
-  </div>
+<div id="header" class="ui text container">
+  <h1>AmaPrime</h1>
+  <h3>Grab the best Amazon Prime deals while you can!</h3>
 </div>
-
 
 <div id="carousel_container" class="ui inverted vertical masthead center aligned segment slick">
   <% @products.each do |product| %>
     <div class="ui card product_card">
       <div class="discount content">
-        <div class="header"><%= number_to_percentage(product.percent_discount * 100, precision: 0) %> Off</div>
+        <div style="float: left; text-decoration: line-through;"><%= number_to_currency(product.original_price) %></div>
+        <div style="display: inline; font-size: 1.5em; font-weight: bold; color: #4183C4"><%= number_to_percentage(product.percent_discount * 100, precision: 0) %> Off</div>
+        <div style="float: right;"><%= number_to_currency(product.sale_price) %></div>
       </div>
       <div class="content">
         <%= link_to image_tag(product.image_link), product.product_link, target: "_blank", class: "image" %>
@@ -36,20 +33,9 @@
       slidesToShow: 1,
       slidesToScroll: 1,
       autoplay: true,
-      autoplaySpeed: 5000
+      autoplaySpeed: 5000,
+      pauseOnFocus: false,
+      pauseOnHover: false
     });
   });
 </script>
-
-
-<div class="ui inverted vertical footer segment">
-  <div class="ui center aligned container">
-    <img src="assets/images/logo.png" class="ui centered mini image" alt="AmaPrime logo">
-    <div class="ui horizontal inverted small divided link list">
-      <a class="item" href="#">Site Map</a>
-      <a class="item" href="#">Contact Us</a>
-      <a class="item" href="#">Terms and Conditions</a>
-      <a class="item" href="#">Privacy Policy</a>
-    </div>
-  </div>
-</div>
