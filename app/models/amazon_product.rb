@@ -41,10 +41,11 @@ class AmazonProduct < ActiveRecord::Base
         record.title = item['ItemAttributes']['Title']
         record.product_link = item['ItemLinks']['ItemLink'].select{|x| x['Description'] == 'Technical Details'}[0]['URL']
         record.image_link = item['MediumImage']['URL']
-        record.original_price = item['ItemAttributes']['ListPrice']['FormattedPrice'].delete('$ ,')
-        record.sale_price = item['OfferSummary']['LowestNewPrice']['FormattedPrice'].delete('$ ,')
-        record.percent_discount = ((record.original_price - record.sale_price) / record.original_price).round(2)
-        if record.percent_discount != 0 && record.sale_price != 0 && record.prime_eligible?(item)
+        offer = item['Offers']['Offer']['OfferListing']
+        record.original_price = offer['Price']['FormattedPrice'].delete('$ ,')
+        record.sale_price = offer['SalePrice']['FormattedPrice'].delete('$ ,')
+        record.percent_discount = offer['PercentageSaved'].to_f / 100
+        if record.percent_discount != 0 && record.sale_price != 0 && record.prime_eligible?(offer)
           AmazonProduct.first.destroy if AmazonProduct.count > 50
           record.save 
           puts "processed Amazon product #{record.asin} - #{record.title}"
@@ -58,7 +59,7 @@ class AmazonProduct < ActiveRecord::Base
   ### Instance methods
   
   def prime_eligible?(item)
-    true if item['Offers']['TotalOffers'] == "1" and item['Offers']['Offer']['OfferListing']['IsEligibleForPrime'] == "1"
+    true if item['IsEligibleForPrime'] == "1"
   end
   
 end

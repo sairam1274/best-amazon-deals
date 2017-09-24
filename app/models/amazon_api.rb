@@ -2,7 +2,7 @@ class AmazonApi < ActiveRecord::Base
   
   def self.api_item_lookup(item_asin)  
     begin
-      $amazon_api_client.item_lookup(query: { 'ItemId' => item_asin, 'ResponseGroup' => 'ItemAttributes,Images,OfferSummary,Offers'}).dig('ItemLookupResponse', 'Items', 'Item')
+      $amazon_api_client.item_lookup(query: { 'ItemId' => item_asin, 'ResponseGroup' => 'ItemAttributes,Images,OfferFull'}).dig('ItemLookupResponse', 'Items', 'Item')
     rescue
       puts "API error looking up #{item_asin}"
     end
