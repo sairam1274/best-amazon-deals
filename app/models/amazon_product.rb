@@ -44,7 +44,7 @@ class AmazonProduct < ActiveRecord::Base
         record.original_price = item['ItemAttributes']['ListPrice']['FormattedPrice'].delete('$ ,')
         record.sale_price = item['OfferSummary']['LowestNewPrice']['FormattedPrice'].delete('$ ,')
         record.percent_discount = ((record.original_price - record.sale_price) / record.original_price).round(2)
-        if record.percent_discount != 0 && record.prime_eligible?(item)
+        if record.percent_discount != 0 && record.sale_price != 0 && record.prime_eligible?(item)
           AmazonProduct.first.destroy if AmazonProduct.count > 50
           record.save 
           puts "processed Amazon product #{record.asin} - #{record.title}"
