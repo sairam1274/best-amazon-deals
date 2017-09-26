@@ -19,12 +19,12 @@ class AmazonRssItem < ActiveRecord::Base
     rss = RSS::Parser.parse('https://rssfeeds.s3.amazonaws.com/goldbox', false)
     case rss.feed_type
       when 'rss'
-        rss.items[0..50].each do |item| 
+        rss.items[0..100].each do |item| 
           AmazonRssItem.first.destroy if AmazonRssItem.count > 50
           AmazonRssItem.process_item(item)
         end
       when 'atom'
-        rss.items[0..50].each { |item| AmazonRssItem.process_item(item) }
+        rss.items[0..100].each { |item| AmazonRssItem.process_item(item) }
     end
     # TODO: remove old entries (by timestamp?)
   end
